@@ -14,26 +14,27 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see http://www.gnu.org/licenses/.
 """
-import time, board, random, math
+import time, board, math
 from adafruit_seesaw import seesaw, neopixel
 
 # setup Seesaw I2C device
 ss = seesaw.Seesaw(board.I2C(), 0x49)
 
 # setup neopixel
-pixel_pin = 0
+pixel_pin = 0 # neopixel Shield is connected to Pin 0 on the Seesaw board
 ROWS = 5
 COLS = 8
 pixel_num = ROWS * COLS
-phaseIncrement = float(0.08);  # Controls the speed of the moving points. Higher == faster. I like 0.08 . was 0.03
-colorStretch = float(0.11);    # Higher numbers will produce tighter color bands. I like 0.11 . was 0.3
-phase = float(0.0);
-
 pixels = neopixel.NeoPixel(ss, pixel_pin, pixel_num, brightness=0.1, auto_write=False, pixel_order=(1,0,2,3))
 
+# blank the neopixel shield
 pixels.fill((0, 0, 0, 0))
 pixels.show()
 
+# define some variables and dicts
+phaseIncrement = float(0.08);  # Controls the speed of the moving points. Higher == faster. I like 0.08 . was 0.03
+colorStretch = float(0.11);    # Higher numbers will produce tighter color bands. I like 0.11 . was 0.3
+phase = float(0.0);
 Point = {}
 Point['p1'] = {}
 Point['p2'] = {}
@@ -42,6 +43,7 @@ Point['dist1'] = {}
 Point['dist2'] = {}
 Point['dist3'] = {}
 
+# function to ensure the interger passed is limited
 def clamp(n, minn, maxn):
     return max(min(maxn, n), minn)
 
